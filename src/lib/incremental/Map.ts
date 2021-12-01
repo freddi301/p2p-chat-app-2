@@ -1,4 +1,4 @@
-import { Reducer } from "../Reducer";
+import { Reducer } from "../reducer";
 import { Map } from "../immutable/Map";
 import type { Incremental } from ".";
 

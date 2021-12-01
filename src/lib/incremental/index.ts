@@ -1,4 +1,4 @@
-import { Reducer } from "../Reducer";
+import { Reducer } from "../reducer";
 import { Set } from "../immutable/Set";
 import { makeSetReducer, makeFilteredSetIncremental } from "./Set";
 import { makeFilteredMapIncremental, makeMapReducer, makeValueMappedMapIncremental } from "./Map";

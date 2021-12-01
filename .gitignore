@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+prisma/migrations
+prisma/*.db
+tsconfig.tsbuildinfo
+yarn-error.log
+user-data
+out/
+*.derived.ts

@@ -1,7 +1,9 @@
-import { Reducer } from "./Reducer";
-import { Set } from "./Set";
+import { Reducer } from "../Reducer";
+import { Set } from "../immutable/Set";
+import { makeSetReducer, makeFilteredSetIncremental } from "./Set";
+import { makeFilteredMapIncremental, makeMapReducer, makeValueMappedMapIncremental } from "./Map";
 
-type Incremental<FromState, FromAction, ToState, ToAction> = {
+export type Incremental<FromState, FromAction, ToState, ToAction> = {
   mapper: Mapper<FromState, ToState>;
   delta: Delta<FromState, FromAction, ToAction>;
   reducer: Reducer<ToState, ToAction>;
@@ -36,47 +38,19 @@ const compose = <FromState, FromAction, ToState, ToAction>(
   ];
 };
 
-type SetState<Value> = Set<Value>;
-type SetAction<Value> = { type: "add"; value: Value } | { type: "remove"; value: Value };
-
-const makeSetReducer =
-  <Value>(): Reducer<SetState<Value>, SetAction<Value>> =>
-  (state, action) => {
-    switch (action.type) {
-      case "add":
-        return state.add(action.value);
-      case "remove":
-        return state.del(action.value);
-    }
-  };
-
-const makeFilteredSetIncremental = <Value>(
-  criteria: (value: Value) => boolean
-): Incremental<SetState<Value>, SetAction<Value>, SetState<Value>, SetAction<Value>> => ({
-  mapper: (state) => state.filter(criteria),
-  delta: (state, action) => {
-    switch (action.type) {
-      case "add": {
-        if (!state.has(action.value) && criteria(action.value))
-          return { scope: "filtered-set", type: "add", value: action.value };
-        return undefined;
-      }
-      case "remove": {
-        if (state.has(action.value) && criteria(action.value))
-          return { scope: "filtered-set", type: "remove", value: action.value };
-        return undefined;
-      }
-    }
-  },
-  reducer: makeSetReducer<Value>(),
-});
-
-const Incremental = {
+export const Incremental = {
   upgrade,
   compose,
   Set: {
     subject: <Value>() => makeSetReducer<Value>(),
     filter: <Value>(criteria: (value: Value) => boolean) => makeFilteredSetIncremental<Value>(criteria),
+  },
+  Map: {
+    subject: <Key, Value>() => makeMapReducer<Key, Value>(),
+    filter: <Key, Value>(criteria: (key: Key, value: Value) => boolean) =>
+      makeFilteredMapIncremental<Key, Value>(criteria),
+    mapValues: <Key, Value>(mapper: (key: Key, value: Value) => Value) =>
+      makeValueMappedMapIncremental<Key, Value>(mapper),
   },
 };
 

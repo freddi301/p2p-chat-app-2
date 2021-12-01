@@ -10,6 +10,8 @@ export type Incremental<FromState, FromAction, ToState, ToAction> = {
 };
 type Mapper<From, To> = (from: From) => To;
 type Delta<FromState, FromAction, ToAction> = (fromStata: FromState, fromAction: FromAction) => ToAction | undefined;
+export type ToStateOfIncremental<I> = I extends Incremental<any, any, infer ToState, any> ? ToState : never;
+export type ToActionOfIncremental<I> = I extends Incremental<any, any, any, infer ToAction> ? ToAction : never;
 
 const upgrade = <FromState, FromAction, ToState, ToAction>(
   reducer: Reducer<FromState, FromAction>,
@@ -19,7 +21,7 @@ const upgrade = <FromState, FromAction, ToState, ToAction>(
   return [
     ([fromState, toState], fromAction) => {
       const delta = incremental.delta(fromState, fromAction);
-      return [reducer(fromState, fromAction), delta ? incremental.reducer(toState, delta) : toState];
+      return [reducer(fromState, fromAction), delta !== undefined ? incremental.reducer(toState, delta) : toState];
     },
     [state, incremental.mapper(state)],
   ];
@@ -32,15 +34,55 @@ const compose = <FromState, FromAction, ToState, ToAction>(
   return [
     ([fromState, toState], fromAction) => {
       const delta = incremental.delta(fromState, fromAction);
-      return [reducer(fromState, fromAction), delta ? incremental.reducer(toState, delta) : toState];
+      return [reducer(fromState, fromAction), delta !== undefined ? incremental.reducer(toState, delta) : toState];
     },
     (state) => [state, incremental.mapper(state)],
+  ];
+};
+
+const composeMany = <
+  FromState,
+  FromAction,
+  Incrementals extends {
+    [Key in keyof Incrementals]: Incremental<
+      FromState,
+      FromAction,
+      ToStateOfIncremental<Incrementals[Key]>,
+      ToActionOfIncremental<Incrementals[Key]>
+    >;
+  }
+>(
+  reducer: Reducer<FromState, FromAction>,
+  incrementals: Incrementals
+): [
+  Reducer<[FromState, { [Key in keyof Incrementals]: ToStateOfIncremental<Incrementals[Key]> }], FromAction>,
+  Mapper<FromState, [FromState, { [Key in keyof Incrementals]: ToStateOfIncremental<Incrementals[Key]> }]>
+] => {
+  return [
+    ([fromState, toState], fromAction) => {
+      return [
+        reducer(fromState, fromAction),
+        Object.fromEntries(
+          Object.entries(incrementals).map(([key, incremental]) => {
+            const delta = (incremental as any).delta(fromState, fromAction);
+            return [key, delta ? (incremental as any).reducer(toState[key], delta) : toState[key]];
+          })
+        ) as any,
+      ];
+    },
+    (state) => [
+      state,
+      Object.fromEntries(
+        Object.entries(incrementals).map(([key, incremental]) => [key, (incremental as any).mapper(state)])
+      ) as any,
+    ],
   ];
 };
 
 export const Incremental = {
   upgrade,
   compose,
+  composeMany,
   Set: {
     subject: <Value>() => makeSetReducer<Value>(),
     filter: <Value>(criteria: (value: Value) => boolean) => makeFilteredSetIncremental<Value>(criteria),

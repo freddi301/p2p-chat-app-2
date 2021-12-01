@@ -1,6 +1,6 @@
 import { ActionOfReducer, Reducer, StateOfReducer } from "./Reducer";
 import { isEqual } from "lodash";
-import { Map } from "./Map";
+import { Map } from "./immutable/Map";
 
 export function makeCombinedReducer<
   Entries extends { [Key in keyof Entries]: Reducer<StateOfReducer<Entries[Key]>, ActionOfReducer<Entries[Key]>> }

@@ -39,7 +39,7 @@ export function ContactListScreen({ owner }: ContactListScreenProps) {
       }
       controls={
         <ControlButtonGroup>
-          <Button icon="Create" label="Create" onClick={onCreate} />
+          <Button icon="Create" label="Create" onClick={onCreate} showLabel={false} />
         </ControlButtonGroup>
       }
     />

@@ -1,12 +1,13 @@
 import Immutable from "immutable";
+import { AsValueObject } from "./ImmutableJS";
 
 export class Map<Key, Value> {
-  private constructor(private immutableMap: Immutable.Map<any, Value>) {}
-  private serializeKey(value: Key): Immutable.Collection<unknown, unknown> {
-    return Immutable.fromJS(value);
+  private constructor(private immutableMap: Immutable.Map<AsValueObject<Key>, Value>) {}
+  private serializeKey(key: Key): AsValueObject<Key> {
+    return new AsValueObject(key);
   }
-  private deserializeKey(value: Immutable.Collection<unknown, unknown>): Key {
-    return Immutable.isCollection(value) ? value.toJS() : (value as any);
+  private deserializeKey(key: AsValueObject<Key>): Key {
+    return key.value;
   }
   static empty<Key, Value>() {
     return new Map<Key, Value>(Immutable.Map());

@@ -1,12 +1,13 @@
 import Immutable from "immutable";
+import { AsValueObject } from "./ImmutableJS";
 
 export class Set<Value> {
-  private constructor(private immutableSet: Immutable.Set<unknown>) {}
-  private serializeValue(value: Value): Immutable.Collection<unknown, unknown> {
-    return Immutable.fromJS(value);
+  private constructor(private immutableSet: Immutable.Set<AsValueObject<Value>>) {}
+  private serializeValue(value: Value): AsValueObject<Value> {
+    return new AsValueObject(value);
   }
-  private deserializeValue(value: Immutable.Collection<unknown, unknown>): Value {
-    return Immutable.isCollection(value) ? value.toJS() : (value as any);
+  private deserializeValue(value: AsValueObject<Value>): Value {
+    return value.value;
   }
   static empty<Value>() {
     return new Set<Value>(Immutable.Set());
@@ -21,9 +22,9 @@ export class Set<Value> {
     return new Set(this.immutableSet.remove(this.serializeValue(value)));
   }
   filter(criteria: (value: Value) => boolean): Set<Value> {
-    return new Set(this.immutableSet.filter((value) => criteria(this.deserializeValue(value as any))));
+    return new Set(this.immutableSet.filter((value) => criteria(this.deserializeValue(value))));
   }
   toArray(): Array<Value> {
-    return this.immutableSet.toArray().map((value) => this.serializeValue(value as any)) as any;
+    return this.immutableSet.toArray().map((value) => this.deserializeValue(value));
   }
 }

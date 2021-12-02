@@ -6,7 +6,7 @@ export class Set<Value> {
     return Immutable.fromJS(value);
   }
   private deserializeValue(value: Immutable.Collection<unknown, unknown>): Value {
-    return value.toJS() as any;
+    return Immutable.isCollection(value) ? value.toJS() : (value as any);
   }
   static empty<Value>() {
     return new Set<Value>(Immutable.Set());

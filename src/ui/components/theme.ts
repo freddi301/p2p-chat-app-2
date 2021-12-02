@@ -1,0 +1,23 @@
+export type Theme = typeof theme;
+export const theme = {
+  primaryTextColor: "hsl(0, 0%, 90%)",
+  secondaryTextColor: "hsl(0, 0%, 55%)",
+  primaryBackgroundColor: "hsl(0, 0%, 5%)",
+  secondaryBackgroundColor: "hsl(0, 0%, 10%)",
+  focusBackgroundColor: "hsl(0, 0%, 15%)",
+  scrollabrBorderRadius: "4px",
+  scrollabrWidth: "8px",
+  scrollabrHeight: "8px",
+  fontFamily: "Roboto",
+  fontSizeSmall: "14px",
+  fontSizeNormal: "16px",
+  fontSizeBig: "24px",
+  fontWeightNormal: "400",
+  fontWeightBold: "700",
+  rowMinWidth: "40px",
+  rowHeight: "40px",
+  rowBorderRadius: "20px",
+  textSpacingVertical: "8px",
+  textSpacingHorizontal: "16px",
+  transitionsDuration: "0.3s",
+};

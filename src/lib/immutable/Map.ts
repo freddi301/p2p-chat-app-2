@@ -6,7 +6,7 @@ export class Map<Key, Value> {
     return Immutable.fromJS(value);
   }
   private deserializeKey(value: Immutable.Collection<unknown, unknown>): Key {
-    return value.toJS() as any;
+    return Immutable.isCollection(value) ? value.toJS() : (value as any);
   }
   static empty<Key, Value>() {
     return new Map<Key, Value>(Immutable.Map());

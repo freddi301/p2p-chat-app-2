@@ -5,6 +5,7 @@ import { StyleProvider } from "./components/style/StyleProvider";
 import { RoutingContext, useRoutingWithAnimation } from "./components/routing/useRoutingWithAnimation";
 import { Routing } from "./Routing";
 import { AccountListScreen } from "./screens/AccountListScreen";
+import { AccountCreateScreen } from "./screens/AccountCreateScreen";
 
 export function App() {
   const children = useRoutingWithAnimation(Screen);
@@ -28,6 +29,8 @@ function Screen({ routing }: ScreeProps) {
   switch (routing.screen) {
     case "account-list":
       return <AccountListScreen />;
+    case "account-create":
+      return <AccountCreateScreen />;
   }
   return (
     <div>

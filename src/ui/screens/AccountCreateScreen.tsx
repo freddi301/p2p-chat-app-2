@@ -38,7 +38,7 @@ export function AccountCreateScreen(props: AccountCreateScreenProps) {
           `}
         >
           <Input label="Name" value={name} onChange={setName} required={true} />
-          <Textarea label="Notes" value={description} onChange={setDescription} />
+          <Textarea label="Description" value={description} onChange={setDescription} />
         </div>
       }
       controls={

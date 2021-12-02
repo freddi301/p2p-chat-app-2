@@ -4,6 +4,8 @@ import { Queries } from "../domain/queries";
 
 export const commands: Commands = {
   AccountCreate() {},
+  AccountUpdate() {},
+  AccountDelete() {},
 };
 
 export const queries: Queries = {

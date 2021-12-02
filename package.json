@@ -8,6 +8,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "easyqrcodejs": "^4.4.7",
     "emoji-mart": "^3.0.1",
     "immutable": "^4.0.0",
     "libsodium-wrappers": "^0.7.9",

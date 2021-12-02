@@ -10,4 +10,6 @@ export type Commands = {
     name: string;
     description: string;
   }): void;
+  AccountUpdate(params: { id: AccountId; timestamp: Timestamp; name: string; description: string }): void;
+  AccountDelete(params: { id: AccountId; timestamp: Timestamp }): void;
 };

@@ -6,6 +6,7 @@ import { RoutingContext, useRoutingWithAnimation } from "./components/routing/us
 import { Routing } from "./Routing";
 import { AccountListScreen } from "./screens/AccountListScreen";
 import { AccountCreateScreen } from "./screens/AccountCreateScreen";
+import { AccountScreen } from "./screens/AccountScreen";
 
 export function App() {
   const children = useRoutingWithAnimation(Screen);
@@ -25,17 +26,19 @@ export function App() {
 
 type ScreeProps = { routing: Routing };
 function Screen({ routing }: ScreeProps) {
-  const { push, pop } = React.useContext(RoutingContext);
+  const { pop } = React.useContext(RoutingContext);
   switch (routing.screen) {
     case "account-list":
       return <AccountListScreen />;
     case "account-create":
       return <AccountCreateScreen />;
+    case "account":
+      return <AccountScreen id={routing.id} />;
   }
   return (
     <div>
-      <Button label="next" onClick={() => push({ screen: "account-list" })} />
       <Button label="prev" onClick={() => pop()} />
+      <pre>{JSON.stringify(routing, null, 2)}</pre>
     </div>
   );
 }

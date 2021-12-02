@@ -2216,6 +2216,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+easyqrcodejs@^4.4.7:
+  version "4.4.7"
+  resolved "https://registry.yarnpkg.com/easyqrcodejs/-/easyqrcodejs-4.4.7.tgz#fc9e9f1073fcc8d5432bc26412a8baec0b611b54"
+  integrity sha512-yb+656cutDWLJmt+JX2+TqfOHlkF6QTWg9BwBowzLykwQCXmNcrHsUhF3ce44UsgQEEkZNHpy8A//8Q8AXaTuQ==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"

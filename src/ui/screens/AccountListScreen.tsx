@@ -13,8 +13,8 @@ import { AccountItem } from "../components/AccountItem";
 
 export function AccountListScreen() {
   const { push } = React.useContext(RoutingContext);
-  const onAccount = (accountId: AccountId) => {
-    push({ screen: "account", accountId });
+  const onAccount = (id: AccountId) => {
+    push({ screen: "account", id });
   };
   const onCreate = () => {
     push({ screen: "account-create" });

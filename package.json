@@ -15,6 +15,7 @@
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-qr-reader": "^2.2.1",
     "react-virtuoso": "^2.2.6",
     "styled-components": "^5.3.3"
   },
@@ -28,6 +29,7 @@
     "@types/lodash": "^4.14.176",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.9",
+    "@types/react-qr-reader": "^2.1.4",
     "@types/styled-components": "^5.1.15",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.0.0",

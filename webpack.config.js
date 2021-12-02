@@ -12,6 +12,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
       path: false,
+      crypto: false,
       // buffer: require.resolve("buffer/"),
     },
   },

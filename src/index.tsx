@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./ui/App";
-import "./lib/incremental";
+import libsodium from "libsodium-wrappers";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+(async () => {
+  await libsodium.ready;
+  const { App } = await import("./ui/App");
+  ReactDOM.render(<App />, document.getElementById("root"));
+})();

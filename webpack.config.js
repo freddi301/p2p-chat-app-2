@@ -1,4 +1,4 @@
-const webpack = require("webpack");
+// const webpack = require("webpack");
 const path = require("path");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
@@ -11,7 +11,8 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
-      buffer: require.resolve("buffer/"),
+      path: false,
+      // buffer: require.resolve("buffer/"),
     },
   },
   module: {
@@ -23,7 +24,18 @@ module.exports = {
           loader: "babel-loader",
           options: {
             plugins: ["macros", !isProd ? require("react-refresh/babel") : false].filter(Boolean),
-            presets: ["@babel/preset-env", "@babel/react", "@babel/typescript"],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    chrome: "55",
+                  },
+                },
+              ],
+              "@babel/react",
+              "@babel/typescript",
+            ],
           },
         },
       },
@@ -42,9 +54,12 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      Buffer: ["buffer", "Buffer"],
-    }),
+    // new webpack.ProvidePlugin({
+    //   Buffer: ["buffer", "Buffer"],
+    // }),
+    // new webpack.EnvironmentPlugin({
+    //   PORT: null,
+    // }),
     !isProd ? new ReactRefreshWebpackPlugin() : false,
   ].filter(Boolean),
   devServer: {

@@ -13,7 +13,7 @@ export function useNavigationStack<NavigationState>(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const pop = () => {
     setState({ stack: state.stack.length > 1 ? state.stack.slice(0, -1) : state.stack });
-    if (state.stack.length > 1) onPop(state.stack[state.stack.length - 1]);
+    if (state.stack.length > 1) onPop(state.stack[state.stack.length - 1] as NavigationState);
   };
   React.useLayoutEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {

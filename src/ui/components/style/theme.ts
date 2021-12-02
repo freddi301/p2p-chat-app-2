@@ -20,4 +20,6 @@ export const theme = {
   textSpacingVertical: "8px",
   textSpacingHorizontal: "16px",
   transitionsDuration: "0.3s",
+  borderColor: "hsl(0, 0%, 5%)",
+  gap: "8px",
 };

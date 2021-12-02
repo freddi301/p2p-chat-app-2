@@ -65,7 +65,7 @@ const composeMany = <
         Object.fromEntries(
           Object.entries(incrementals).map(([key, incremental]) => {
             const delta = (incremental as any).delta(fromState, fromAction);
-            return [key, delta ? (incremental as any).reducer(toState[key], delta) : toState[key]];
+            return [key, delta ? (incremental as any).reducer((toState as any)[key], delta) : (toState as any)[key]];
           })
         ) as any,
       ];

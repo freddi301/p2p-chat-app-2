@@ -30,12 +30,12 @@ function calculateHashCode(value: unknown): number {
         );
       }
       case Object.prototype: {
-        const object = value as object;
+        const object = value as Record<string, unknown>;
         const keys = Object.getOwnPropertyNames(object);
         return hashCollection(
           (step) => {
             for (let i = 0; i < keys.length; i++) {
-              const key = keys[i];
+              const key = keys[i] as string;
               step(key, object[key]);
             }
             return keys.length;
@@ -77,7 +77,7 @@ function hashCollection(
   return murmurHashOfSize(size, h);
 }
 
-function murmurHashOfSize(size, h) {
+function murmurHashOfSize(size: number, h: number) {
   h = imul(h, 0xcc9e2d51);
   h = imul((h << 15) | (h >>> -15), 0x1b873593);
   h = imul((h << 13) | (h >>> -13), 5);
@@ -88,14 +88,14 @@ function murmurHashOfSize(size, h) {
   return h;
 }
 
-function hashMerge(a, b) {
+function hashMerge(a: number, b: number) {
   return (a ^ (b + 0x9e3779b9 + (a << 6) + (a >> 2))) | 0; // int
 }
 
 const imul =
   typeof Math.imul === "function" && Math.imul(0xffffffff, 2) === -2
     ? Math.imul
-    : function imul(a, b) {
+    : function imul(a: number, b: number) {
         a |= 0; // int
         b |= 0; // int
         const c = a & 0xffff;
@@ -104,6 +104,6 @@ const imul =
         return (c * d + ((((a >>> 16) * d + c * (b >>> 16)) << 16) >>> 0)) | 0; // int
       };
 
-function smi(i32) {
+function smi(i32: number) {
   return ((i32 >>> 1) & 0x40000000) | (i32 & 0xbfffffff);
 }

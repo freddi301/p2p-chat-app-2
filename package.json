@@ -3,9 +3,6 @@
     "dev": "webpack serve"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "styled-components": "^5.3.3",
     "@fontsource/roboto": "^4.5.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
@@ -15,7 +12,10 @@
     "immutable": "^4.0.0",
     "libsodium-wrappers": "^0.7.9",
     "lodash": "^4.17.21",
-    "react-virtuoso": "^2.2.6"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-virtuoso": "^2.2.6",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -23,8 +23,9 @@
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@types/libsodium-wrappers": "^0.7.9",
     "@types/lodash": "^4.14.176",
-    "@types/react": "^17.0.30",
+    "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.9",
     "@types/styled-components": "^5.1.15",
     "@typescript-eslint/eslint-plugin": "^4.0.0",

@@ -7,6 +7,7 @@ import { Routing } from "./Routing";
 import { AccountListScreen } from "./screens/AccountListScreen";
 import { AccountCreateScreen } from "./screens/AccountCreateScreen";
 import { AccountScreen } from "./screens/AccountScreen";
+import { ContactListScreen } from "./screens/ContactListScreen";
 
 export function App() {
   const children = useRoutingWithAnimation(Screen);
@@ -34,6 +35,8 @@ function Screen({ routing }: ScreeProps) {
       return <AccountCreateScreen />;
     case "account":
       return <AccountScreen id={routing.id} />;
+    case "contact-list":
+      return <ContactListScreen owner={routing.owner} />;
   }
   return (
     <div>

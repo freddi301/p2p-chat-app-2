@@ -3,34 +3,37 @@ import { Virtuoso } from "react-virtuoso";
 import { AccountId } from "../../domain/common/AccountId";
 import { Button } from "../components/base/Button";
 import { Clickable } from "../components/base/Clickable";
+import { ContactItem } from "../components/ContactItem";
 import { ControlButtonGroup } from "../components/reusable/ControlButtonGroup";
 import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
 import { HeaderContentControlsLayout } from "../components/reusable/HeaderContentControlsLayout";
 import { SimpleHeader } from "../components/reusable/SimpleHeader";
 import { RoutingContext } from "../components/routing/useRoutingWithAnimation";
 import { queries } from "../FrontendFacade";
-import { AccountItem } from "../components/AccountItem";
 
-export function AccountListScreen() {
+type ContactListScreenProps = {
+  owner: AccountId;
+};
+export function ContactListScreen({ owner }: ContactListScreenProps) {
   const { push } = React.useContext(RoutingContext);
-  const onAccount = (id: AccountId) => {
-    push({ screen: "account", id });
+  const onContact = (id: AccountId) => {
+    push({ screen: "contact", owner, id });
   };
   const onCreate = () => {
-    push({ screen: "account-create" });
+    push({ screen: "contact-create", owner });
   };
-  const accountListSize = queries.AccountListSize();
+  const contactListSize = queries.ContactListSize({ owner });
   return (
     <HeaderContentControlsLayout
-      header={<SimpleHeader>Accounts</SimpleHeader>}
+      header={<SimpleHeader>Contacts</SimpleHeader>}
       content={
-        accountListSize === 0 ? (
-          <EmptyListPlaceholder>No accounts</EmptyListPlaceholder>
+        contactListSize === 0 ? (
+          <EmptyListPlaceholder>No contacts</EmptyListPlaceholder>
         ) : (
           <Virtuoso
             style={{ height: "100%" }}
-            totalCount={accountListSize}
-            itemContent={(index) => <AccountListItem index={index} onAccount={onAccount} />}
+            totalCount={contactListSize}
+            itemContent={(index) => <ContactListItem index={index} owner={owner} onContact={onContact} />}
           />
         )
       }
@@ -43,13 +46,13 @@ export function AccountListScreen() {
   );
 }
 
-type AccountListItemProps = { index: number; onAccount(id: AccountId): void };
-function AccountListItem({ index, onAccount }: AccountListItemProps) {
-  const id = queries.AccountListAtIndex({ index });
+type ContactListItemProps = { index: number; owner: AccountId; onContact(id: AccountId): void };
+function ContactListItem({ index, onContact, owner }: ContactListItemProps) {
+  const id = queries.ContactListAtIndex({ owner, index });
   if (!id) throw new Error();
   return (
-    <Clickable onClick={() => onAccount(id)}>
-      <AccountItem id={id} />
+    <Clickable onClick={() => onContact(id)}>
+      <ContactItem owner={owner} id={id} />
     </Clickable>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "styled-components/macro";
-import { IconName } from "../themeIcons";
+import { IconName } from "../style/themeIcons";
 import { Icon } from "./Icon";
 
 type ButtonProps = {

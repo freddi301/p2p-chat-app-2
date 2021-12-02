@@ -1,5 +1,5 @@
 import React from "react";
-import { createGlobalStyle, css, ThemeProvider } from "styled-components/macro";
+import { createGlobalStyle, ThemeProvider } from "styled-components/macro";
 import { theme } from "./theme";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/700.css";

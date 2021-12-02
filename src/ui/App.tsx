@@ -1,8 +1,9 @@
 import React from "react";
 import { css } from "styled-components/macro";
 import { Button } from "./components/base/Button";
-import { StyleProvider } from "./components/StyleProvider";
-import { RoutingContext, useRoutingWithAnimation } from "./components/useRoutingWithAnimation";
+import { StyleProvider } from "./components/style/StyleProvider";
+import { RoutingContext, useRoutingWithAnimation } from "./components/routing/useRoutingWithAnimation";
+import { Routing } from "./Routing";
 
 export function App() {
   const children = useRoutingWithAnimation(Screen);
@@ -20,14 +21,12 @@ export function App() {
   );
 }
 
-export type Routing = { screen: "home" };
-
 type ScreeProps = { routing: Routing };
 function Screen({ routing }: ScreeProps) {
   const { push, pop } = React.useContext(RoutingContext);
   return (
     <div>
-      <Button label="next" onClick={() => push({ screen: "home" })} />
+      <Button label="next" onClick={() => push({ screen: "account-list" })} />
       <Button label="prev" onClick={() => pop()} />
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigationStack } from "./useNavigationStack";
 import { useTransitionate } from "./useTransitionate";
-import { Routing } from "../App";
+import { Routing } from "../../Routing";
 
 export function useRoutingWithAnimation(Screen: React.ComponentType<{ routing: Routing }>) {
   const [content, next] = useTransitionate();
@@ -19,7 +19,7 @@ export function useRoutingWithAnimation(Screen: React.ComponentType<{ routing: R
   return <RoutingContext.Provider value={{ push, pop }}>{content}</RoutingContext.Provider>;
 }
 
-const root: Routing = { screen: "home" };
+const root: Routing = { screen: "account-list" };
 
 type RoutingContextValue = {
   push(next: Routing): void;

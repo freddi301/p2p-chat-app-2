@@ -9,4 +9,10 @@ export class Timestamp {
   static fromEpochMillis(epochMillis: number) {
     return new Timestamp(epochMillis);
   }
+  inc(by: number) {
+    return new Timestamp(this.epochMillis + by);
+  }
+  toDate() {
+    return new Date(this.epochMillis);
+  }
 }

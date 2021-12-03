@@ -27,15 +27,18 @@ export function ContactScreen({ owner, id }: ContactScreenProps) {
     commands.ContactUpdate({ owner, id, timestamp, name, description });
   };
   const onDelete = () => {
-    const timestamp = Timestamp.now();
-    commands.ContactDelete({ owner, id, timestamp });
-    pop();
+    const confirm = prompt("Type contact name to confirm elimination");
+    if (confirm === name) {
+      const timestamp = Timestamp.now();
+      commands.ContactDelete({ owner, id, timestamp });
+      pop();
+    }
   };
   const onConversation = () => {
     push({ screen: "conversation", owner, id });
   };
   const onPosts = () => {
-    push({ screen: "post-list", owner, id });
+    push({ screen: "post-list", viewer: owner, author: id });
   };
   return (
     <HeaderContentControlsLayout

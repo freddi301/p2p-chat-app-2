@@ -1,11 +1,11 @@
 import React from "react";
 import { Virtuoso } from "react-virtuoso";
+import { css } from "styled-components/macro";
 import { AccountId } from "../../domain/common/AccountId";
 import { Button } from "../components/base/Button";
 import { Clickable } from "../components/base/Clickable";
 import { ContactItem } from "../components/ContactItem";
 import { ControlButtonGroup } from "../components/reusable/ControlButtonGroup";
-import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
 import { HeaderContentControlsLayout } from "../components/reusable/HeaderContentControlsLayout";
 import { SimpleHeader } from "../components/reusable/SimpleHeader";
 import { RoutingContext } from "../components/routing/useRoutingWithAnimation";
@@ -28,7 +28,7 @@ export function ContactListScreen({ owner }: ContactListScreenProps) {
       header={<SimpleHeader>Contacts</SimpleHeader>}
       content={
         contactListSize === 0 ? (
-          <EmptyListPlaceholder>No contacts</EmptyListPlaceholder>
+          <AddContactHint owner={owner} />
         ) : (
           <Virtuoso
             style={{ height: "100%" }}
@@ -54,5 +54,35 @@ function ContactListItem({ index, onContact, owner }: ContactListItemProps) {
     <Clickable onClick={() => onContact(id)}>
       <ContactItem owner={owner} id={id} />
     </Clickable>
+  );
+}
+
+type AddContactHintProps = { owner: AccountId };
+function AddContactHint({ owner }: AddContactHintProps) {
+  const { push } = React.useContext(RoutingContext);
+  const onCreate = () => {
+    push({ screen: "contact-create", owner });
+  };
+  return (
+    <div
+      css={css`
+        display: grid;
+        grid-row-gap: ${(props) => props.theme.gap};
+        grid-auto-flow: row;
+        grid-auto-rows: auto;
+        padding: ${(props) => props.theme.textSpacingVertical} ${(props) => props.theme.textSpacingHorizontal};
+      `}
+    >
+      <div>You don't have any contacts on this device</div>
+      <div
+        css={css`
+          display: grid;
+          grid-auto-flow: column;
+          grid-column-gap: ${(props) => props.theme.gap};
+        `}
+      >
+        <Button label="AddContact" icon="Create" onClick={onCreate} />
+      </div>
+    </div>
   );
 }

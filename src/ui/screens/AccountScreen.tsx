@@ -34,13 +34,16 @@ export function AccountScreen({ id }: AccountScreenProps) {
     }
   };
   const onConversations = () => {
-    push({ screen: "conversation-list", id });
+    push({ screen: "conversation-list", owner: id });
   };
   const onPosts = () => {
-    push({ screen: "post-list", id });
+    push({ screen: "post-list", viewer: id, author: id });
+  };
+  const onPostsFeed = () => {
+    push({ screen: "post-feed-list", owner: id });
   };
   const onContacts = () => {
-    push({ screen: "contact-list", id });
+    push({ screen: "contact-list", owner: id });
   };
   return (
     <HeaderContentControlsLayout
@@ -67,7 +70,8 @@ export function AccountScreen({ id }: AccountScreenProps) {
             <ContactQRcode text={id.toHex()} />
           </div>
           <Textarea label="Description" value={description} onChange={setDescription} />
-          <Button label="Posts" icon="Posts" onClick={onPosts} />
+          <Button label="Feed" icon="Posts" onClick={onPostsFeed} />
+          <Button label="My Posts" icon="Posts" onClick={onPosts} />
           <Button label="Contacts" icon="Contacts" onClick={onContacts} />
           <Button label="Conversations" icon="Conversations" onClick={onConversations} />
         </div>

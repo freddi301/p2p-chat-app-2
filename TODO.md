@@ -1,5 +1,8 @@
 # Before Proof of Concept release
 
+- create post screen
+- add attachments to posts / messages / comments
+- edit / delete - post / comment / message
 - preserve scroll positionts between screens
 - post feed
 - encrypt / decrypt messages
@@ -28,7 +31,6 @@
 - polls
 - comment on post
 - group chat
-- put in QR code contact or account avatar
 - add avatars everywhere
 - get multimedia clipping right
 - modify/delete posts messages

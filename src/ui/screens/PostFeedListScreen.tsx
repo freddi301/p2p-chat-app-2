@@ -25,7 +25,7 @@ export function PostFeedListScreen({ owner }: PostFeedListScreenProps) {
           <Virtuoso
             style={{ height: "100%" }}
             totalCount={postListSize}
-            itemContent={(index) => <PostListItem index={index} owner={owner} />}
+            itemContent={(index) => <PostFeedListItemMemo index={index} owner={owner} />}
           />
         )
       }
@@ -38,8 +38,8 @@ export function PostFeedListScreen({ owner }: PostFeedListScreenProps) {
   );
 }
 
-type PostListItemProps = { index: number; owner: AccountId };
-function PostListItem({ index, owner }: PostListItemProps) {
+type PostFeedListItemProps = { index: number; owner: AccountId };
+function PostFeedListItem({ index, owner }: PostFeedListItemProps) {
   const id = queries.PostFeedListAtIndex({ owner, index });
   if (!id) throw new Error();
   return (
@@ -48,3 +48,4 @@ function PostListItem({ index, owner }: PostListItemProps) {
     </Clickable>
   );
 }
+const PostFeedListItemMemo = React.memo(PostFeedListItem);

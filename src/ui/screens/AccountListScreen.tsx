@@ -30,7 +30,7 @@ export function AccountListScreen() {
           <Virtuoso
             style={{ height: "100%" }}
             totalCount={accountListSize}
-            itemContent={(index) => <AccountListItem index={index} onAccount={onAccount} />}
+            itemContent={(index) => <AccountListItemMemo index={index} onAccount={onAccount} />}
           />
         )
       }
@@ -53,6 +53,7 @@ function AccountListItem({ index, onAccount }: AccountListItemProps) {
     </Clickable>
   );
 }
+const AccountListItemMemo = React.memo(AccountListItem);
 
 function CreateAccountHint() {
   const { push } = React.useContext(RoutingContext);

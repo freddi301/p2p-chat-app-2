@@ -26,7 +26,7 @@ export function PostListScreen({ viewer, author }: PostListScreenProps) {
           <Virtuoso
             style={{ height: "100%" }}
             totalCount={postListSize}
-            itemContent={(index) => <PostListItem index={index} viewer={viewer} author={author} />}
+            itemContent={(index) => <PostListItemMemo index={index} viewer={viewer} author={author} />}
           />
         )
       }
@@ -49,3 +49,4 @@ function PostListItem({ index, viewer, author }: PostListItemProps) {
     </Clickable>
   );
 }
+const PostListItemMemo = React.memo(PostListItem);

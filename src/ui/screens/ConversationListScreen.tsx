@@ -35,7 +35,9 @@ export function ConversationListScreen({ owner }: ConversationListScreenProps) {
           <Virtuoso
             style={{ height: "100%" }}
             totalCount={conversationListSize}
-            itemContent={(index) => <ConversationLisItem index={index} owner={owner} onConversation={onConversation} />}
+            itemContent={(index) => (
+              <ConversationLisItemMemo index={index} owner={owner} onConversation={onConversation} />
+            )}
           />
         )
       }
@@ -125,5 +127,6 @@ function ConversationLisItem({ index, onConversation, owner }: ConversationItemP
     </Clickable>
   );
 }
+const ConversationLisItemMemo = React.memo(ConversationLisItem);
 
 const dateTimeFormatter = Intl.DateTimeFormat([], { dateStyle: "short", timeStyle: "medium" });

@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from "styled-components/macro";
 import { StyleProvider } from "./components/style/StyleProvider";
-import { RoutingContext, useRoutingWithAnimation } from "./components/routing/useRoutingWithAnimation";
+import { useRoutingWithAnimation } from "./components/routing/useRoutingWithAnimation";
 import { Routing } from "./Routing";
 import { AccountListScreen } from "./screens/AccountListScreen";
 import { AccountCreateScreen } from "./screens/AccountCreateScreen";
@@ -16,7 +16,7 @@ import { HeaderContentControlsLayout } from "./components/reusable/HeaderContent
 import { SimpleHeader } from "./components/reusable/SimpleHeader";
 
 export function App() {
-  const children = useRoutingWithAnimation(Screen);
+  const children = useRoutingWithAnimation(ScreenMemo);
   return (
     <StyleProvider>
       <div
@@ -33,7 +33,6 @@ export function App() {
 
 type ScreeProps = { routing: Routing };
 function Screen({ routing }: ScreeProps) {
-  const { pop } = React.useContext(RoutingContext);
   switch (routing.screen) {
     case "account-list":
       return <AccountListScreen />;
@@ -62,3 +61,4 @@ function Screen({ routing }: ScreeProps) {
     />
   );
 }
+const ScreenMemo = React.memo(Screen);

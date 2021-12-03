@@ -4,10 +4,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.1",
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-regular-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "easyqrcodejs": "^4.4.7",
     "emoji-mart": "^3.0.1",
     "immutable": "^4.0.0",

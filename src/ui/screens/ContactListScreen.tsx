@@ -33,7 +33,7 @@ export function ContactListScreen({ owner }: ContactListScreenProps) {
           <Virtuoso
             style={{ height: "100%" }}
             totalCount={contactListSize}
-            itemContent={(index) => <ContactListItem index={index} owner={owner} onContact={onContact} />}
+            itemContent={(index) => <ContactListItemMemo index={index} owner={owner} onContact={onContact} />}
           />
         )
       }
@@ -56,6 +56,7 @@ function ContactListItem({ index, onContact, owner }: ContactListItemProps) {
     </Clickable>
   );
 }
+const ContactListItemMemo = React.memo(ContactListItem);
 
 type AddContactHintProps = { owner: AccountId };
 function AddContactHint({ owner }: AddContactHintProps) {

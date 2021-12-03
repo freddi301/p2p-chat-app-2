@@ -1,5 +1,6 @@
 import { Commands } from "../domain/commands";
 import { AccountId } from "../domain/common/AccountId";
+import { FileId } from "../domain/common/FileId";
 import { Timestamp } from "../domain/common/Timestamp";
 import { Queries } from "../domain/queries";
 
@@ -40,6 +41,24 @@ export const queries: Queries = {
     return {
       name: "Name" + id.toHex(),
       description: "Description" + id.toHex(),
+    };
+  },
+  ConversationListSize({ owner }) {
+    return 1000;
+  },
+  ConversationListAtIndex({ owner, index }) {
+    const fakeId = new Array(32).fill(index);
+    const other = AccountId.fromUint8Array(Uint8Array.from(fakeId));
+    const fileId = FileId.fromUint8Array(Uint8Array.from(fakeId));
+    return {
+      other,
+      lastMessage: {
+        sender: owner,
+        recipient: other,
+        createdAt: sameCreatedAt.inc(index),
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nVestibulum nisi ipsum, aliquet rhoncus gravida hendrerit, ornare quis nisl.",
+        attachments: new Array(index).fill({ name: "file", id: fileId }) as any,
+      },
     };
   },
   PostById({ author, createdAt }) {

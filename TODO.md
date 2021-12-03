@@ -1,5 +1,7 @@
 # Before Proof of Concept release
 
+- message attachments
+- new conversation screen
 - create post screen
 - add attachments to posts / messages / comments
 - edit / delete - post / comment / message

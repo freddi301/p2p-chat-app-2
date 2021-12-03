@@ -68,7 +68,7 @@ module.exports = {
       overlay: { errors: true, warnings: false },
     },
     hot: true,
-    port: Number(process.env.PORT),
+    // port: Number(process.env.PORT),
     // proxy: {
     //   [LOCAL_RPC_WEBSOCKET_PATH]: {
     //     target: `http://localhost:${LOCAL_RPC_WEBSOCKET_PORT}`,

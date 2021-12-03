@@ -10,4 +10,7 @@ export type Routing =
   | { screen: "conversation-list"; owner: AccountId }
   | { screen: "conversation"; owner: AccountId; id: AccountId }
   | { screen: "post-list"; viewer: AccountId; author: AccountId }
-  | { screen: "post-feed-list"; owner: AccountId };
+  | { screen: "post-feed-list"; owner: AccountId }
+  | { screen: "conversation-list"; owner: AccountId }
+  | { screen: "conversation"; owner: AccountId; other: AccountId }
+  | { screen: "conversation-create"; owner: AccountId };

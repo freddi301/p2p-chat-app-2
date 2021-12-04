@@ -44,6 +44,9 @@ export function MessageEditor({ onSend, submitOnEnter }: MessageEditorProps) {
       <div
         css={css`
           grid-area: picker;
+          height: ${showEmojis ? "380px" : "0px"};
+          overflow-y: hidden;
+          transition: ${(props) => props.theme.transitionsDuration};
           .emoji-mart-dark {
             background-color: ${(props) => props.theme.primaryBackgroundColor};
             border-radius: ${(props) => props.theme.rowBorderRadius} ${(props) => props.theme.rowBorderRadius} 0px 0px;
@@ -67,7 +70,7 @@ export function MessageEditor({ onSend, submitOnEnter }: MessageEditorProps) {
             padding: ${(props) => props.theme.textSpacingVertical} ${(props) => props.theme.textSpacingHorizontal};
           }
           .emoji-mart-dark .emoji-mart-search input {
-            background-color: ${(props) => props.theme.secondaryBackgroundColor};
+            background-color: ${(props) => props.theme.primaryBackgroundColor};
             color: ${(props) => props.theme.primaryTextColor};
             border-color: ${(props) => props.theme.borderColor};
             border-radius: 0px;
@@ -76,7 +79,7 @@ export function MessageEditor({ onSend, submitOnEnter }: MessageEditorProps) {
           }
         `}
       >
-        {showEmojis && (
+        {
           <Picker
             style={{ width: "100%" }}
             theme="dark"
@@ -99,7 +102,7 @@ export function MessageEditor({ onSend, submitOnEnter }: MessageEditorProps) {
               }
             }}
           />
-        )}
+        }
       </div>
       <div
         css={css`

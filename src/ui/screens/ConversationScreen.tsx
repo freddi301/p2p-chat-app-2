@@ -7,6 +7,7 @@ import { Timestamp } from "../../domain/common/Timestamp";
 import { Map } from "../../lib/immutable/Map";
 import { Button } from "../components/base/Button";
 import { Icon } from "../components/base/Icon";
+import { MessageEditor } from "../components/MessageEditor";
 import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
 import { HeaderContentControlsLayout } from "../components/reusable/HeaderContentControlsLayout";
 import { SimpleHeader } from "../components/reusable/SimpleHeader";
@@ -88,7 +89,7 @@ export function ConversationScreen({ owner, other }: ConversationScreenProps) {
               />
             </div>
           </div>
-          {/* <MessageEditor onSend={onSend} submitOnEnter={true} /> */}
+          <MessageEditor onSend={onSend} submitOnEnter={true} />
         </div>
       }
       controls={null}

@@ -1070,6 +1070,13 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@types/emoji-mart@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-3.0.8.tgz#b0de7aabf39b5c4b6e378432bb3b99dbf903bc04"
+  integrity sha512-jmNew3D9XAVchIpyXHEZjR3Sa0uP8qD5TILk9U6Ev/Fcp43V6K1UFZ07KWtVVLjzyCMXaFB9UD3/3Y/2vVdGmQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/eslint-scope@^3.7.0":
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.1.tgz#8dc390a7b4f9dd9f1284629efce982e41612116e"

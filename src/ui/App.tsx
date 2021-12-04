@@ -14,6 +14,7 @@ import { PostFeedListScreen } from "./screens/PostFeedListScreen";
 import { ConversationListScreen } from "./screens/ConversationListScreen";
 import { HeaderContentControlsLayout } from "./components/reusable/HeaderContentControlsLayout";
 import { SimpleHeader } from "./components/reusable/SimpleHeader";
+import { ConversationScreen } from "./screens/ConversationScreen";
 
 export function App() {
   const children = useRoutingWithAnimation(ScreenMemo);
@@ -48,6 +49,8 @@ function Screen({ routing }: ScreeProps) {
       return <ContactScreen owner={routing.owner} id={routing.id} />;
     case "conversation-list":
       return <ConversationListScreen owner={routing.owner} />;
+    case "conversation":
+      return <ConversationScreen owner={routing.owner} other={routing.other} />;
     case "post-list":
       return <PostListScreen viewer={routing.viewer} author={routing.author} />;
     case "post-feed-list":

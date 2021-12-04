@@ -5,6 +5,7 @@ import { AccountId } from "../../domain/common/AccountId";
 import { Button } from "../components/base/Button";
 import { Clickable } from "../components/base/Clickable";
 import { Icon } from "../components/base/Icon";
+import { Avatar } from "../components/reusable/Avatar";
 import { ControlButtonGroup } from "../components/reusable/ControlButtonGroup";
 import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
 import { HeaderContentControlsLayout } from "../components/reusable/HeaderContentControlsLayout";
@@ -27,7 +28,7 @@ export function ConversationListScreen({ owner }: ConversationListScreenProps) {
   const conversationListSize = queries.ConversationListSize({ owner });
   return (
     <HeaderContentControlsLayout
-      header={<SimpleHeader>Conversation</SimpleHeader>}
+      header={<SimpleHeader>Conversations</SimpleHeader>}
       content={
         !conversationListSize ? (
           <EmptyListPlaceholder>No conversations</EmptyListPlaceholder>
@@ -64,14 +65,23 @@ function ConversationLisItem({ index, onConversation, owner }: ConversationItemP
       <div
         css={css`
           display: grid;
-          grid-template-columns: 1fr auto;
+          grid-template-columns: auto 1fr auto;
           grid-template-rows: auto auto;
           padding: ${(props) => props.theme.textSpacingVertical} ${(props) => props.theme.textSpacingHorizontal};
+          column-gap: ${(props) => props.theme.gap};
         `}
       >
         <div
           css={css`
             grid-column: 1;
+            grid-row: 1 / span 2;
+          `}
+        >
+          <Avatar />
+        </div>
+        <div
+          css={css`
+            grid-column: 2;
             grid-row: 1;
             font-weight: ${(props) => props.theme.fontWeightBold};
           `}
@@ -80,7 +90,7 @@ function ConversationLisItem({ index, onConversation, owner }: ConversationItemP
         </div>
         <div
           css={css`
-            grid-column: 2;
+            grid-column: 3;
             grid-row: 1;
             color: ${(props) => props.theme.secondaryTextColor};
             font-size: ${(props) => props.theme.fontSizeSmall};
@@ -90,7 +100,7 @@ function ConversationLisItem({ index, onConversation, owner }: ConversationItemP
         </div>
         <div
           css={css`
-            grid-column: 1 / span 2;
+            grid-column: 2 / span 2;
             grid-row: 2;
             display: flex;
           `}

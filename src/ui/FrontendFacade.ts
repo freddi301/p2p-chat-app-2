@@ -21,8 +21,7 @@ export const queries: Queries = {
     return 1000;
   },
   AccountListAtIndex({ index }) {
-    const fakeId = new Array(32).fill(index);
-    return AccountId.fromUint8Array(Uint8Array.from(fakeId));
+    return makeFakeAccountId(index);
   },
   AccountById({ id }) {
     return {
@@ -34,8 +33,7 @@ export const queries: Queries = {
     return 1000;
   },
   ContactListAtIndex({ index }) {
-    const fakeId = new Array(32).fill(index);
-    return AccountId.fromUint8Array(Uint8Array.from(fakeId));
+    return makeFakeAccountId(index);
   },
   ContactById({ id }) {
     return {
@@ -47,8 +45,8 @@ export const queries: Queries = {
     return 1000;
   },
   ConversationListAtIndex({ owner, index }) {
+    const other = makeFakeAccountId(index);
     const fakeId = new Array(32).fill(index);
-    const other = AccountId.fromUint8Array(Uint8Array.from(fakeId));
     const fileId = FileId.fromUint8Array(Uint8Array.from(fakeId));
     return {
       other,
@@ -57,8 +55,32 @@ export const queries: Queries = {
         recipient: other,
         createdAt: sameCreatedAt.inc(index),
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nVestibulum nisi ipsum, aliquet rhoncus gravida hendrerit, ornare quis nisl.",
-        attachments: new Array(index).fill({ name: "file", id: fileId }) as any,
+        attachments: new Array(index).fill({ name: "file", id: fileId }),
       },
+    };
+  },
+  ConversationSize({ owner, other }) {
+    return 100000;
+  },
+  ConversationAtIndex({ owner, other, index }) {
+    return {
+      sender: owner,
+      recipient: other,
+      createdAt: sameCreatedAt.inc(index),
+    };
+  },
+  DirectMessageById({ sender, recipient, createdAt }) {
+    const fakeId = new Array(32).fill(0);
+    const fileId = FileId.fromUint8Array(Uint8Array.from(fakeId));
+    return {
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nisi ipsum, aliquet rhoncus gravida hendrerit, ornare quis nisl. Aliquam ornare sagittis mi a pellentesque. Aenean non ipsum nibh. Donec ac leo sapien. Phasellus at libero sed felis sodales ornare. Duis in commodo orci. Cras ullamcorper efficitur auctor. Nulla nec erat finibus, feugiat diam vel, accumsan quam. Sed quis tempus arcu.".slice(
+        0,
+        createdAt.toDate().getTime() % 100
+      ),
+      attachments: [
+        { name: "veryloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong.pdf", id: fileId },
+        { name: "file.txt", id: fileId },
+      ],
     };
   },
   PostById({ author, createdAt }) {
@@ -81,3 +103,7 @@ export const queries: Queries = {
 };
 
 const sameCreatedAt = Timestamp.now();
+const makeFakeAccountId = (seed: number) => {
+  const fakeId = new Array(32).fill(seed);
+  return AccountId.fromUint8Array(Uint8Array.from(fakeId));
+};

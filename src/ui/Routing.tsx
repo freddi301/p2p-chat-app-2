@@ -8,9 +8,7 @@ export type Routing =
   | { screen: "contact-create"; owner: AccountId }
   | { screen: "contact"; owner: AccountId; id: AccountId }
   | { screen: "conversation-list"; owner: AccountId }
-  | { screen: "conversation"; owner: AccountId; id: AccountId }
-  | { screen: "post-list"; viewer: AccountId; author: AccountId }
-  | { screen: "post-feed-list"; owner: AccountId }
-  | { screen: "conversation-list"; owner: AccountId }
+  | { screen: "conversation-create"; owner: AccountId }
   | { screen: "conversation"; owner: AccountId; other: AccountId }
-  | { screen: "conversation-create"; owner: AccountId };
+  | { screen: "post-list"; viewer: AccountId; author: AccountId }
+  | { screen: "post-feed-list"; owner: AccountId };

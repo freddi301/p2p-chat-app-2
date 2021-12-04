@@ -2,7 +2,6 @@ import React from "react";
 import { Virtuoso } from "react-virtuoso";
 import { AccountId } from "../../domain/common/AccountId";
 import { Button } from "../components/base/Button";
-import { Clickable } from "../components/base/Clickable";
 import { PostItem } from "../components/PostItem";
 import { ControlButtonGroup } from "../components/reusable/ControlButtonGroup";
 import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
@@ -43,10 +42,6 @@ type PostListItemProps = { index: number; viewer: AccountId; author: AccountId }
 function PostListItem({ index, viewer, author }: PostListItemProps) {
   const id = queries.PostListAtIndex({ viewer, author, index });
   if (!id) throw new Error();
-  return (
-    <Clickable onClick={() => alert("not implemted")}>
-      <PostItem viewer={viewer} author={author} createdAt={id.createdAt} />
-    </Clickable>
-  );
+  return <PostItem viewer={viewer} author={author} createdAt={id.createdAt} />;
 }
 const PostListItemMemo = React.memo(PostListItem);

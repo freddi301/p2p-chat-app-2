@@ -35,7 +35,7 @@ export function ContactScreen({ owner, id }: ContactScreenProps) {
     }
   };
   const onConversation = () => {
-    push({ screen: "conversation", owner, id });
+    push({ screen: "conversation", owner, other: id });
   };
   const onPosts = () => {
     push({ screen: "post-list", viewer: owner, author: id });

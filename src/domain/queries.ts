@@ -20,6 +20,16 @@ export type Queries = {
       attachments: Array<{ name: string; id: FileId }>;
     };
   } | null;
+  ConversationSize(params: { owner: AccountId; other: AccountId }): number;
+  ConversationAtIndex(params: { owner: AccountId; other: AccountId; index: number }): {
+    sender: AccountId;
+    recipient: AccountId;
+    createdAt: Timestamp;
+  } | null;
+  DirectMessageById(params: { sender: AccountId; recipient: AccountId; createdAt: Timestamp }): {
+    text: string;
+    attachments: Array<{ name: string; id: FileId }>;
+  };
   PostListSize(params: { viewer: AccountId; author: AccountId }): number;
   PostListAtIndex(params: {
     viewer: AccountId;

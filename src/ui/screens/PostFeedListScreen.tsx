@@ -2,7 +2,6 @@ import React from "react";
 import { Virtuoso } from "react-virtuoso";
 import { AccountId } from "../../domain/common/AccountId";
 import { Button } from "../components/base/Button";
-import { Clickable } from "../components/base/Clickable";
 import { PostItem } from "../components/PostItem";
 import { ControlButtonGroup } from "../components/reusable/ControlButtonGroup";
 import { EmptyListPlaceholder } from "../components/reusable/EmptyListPlaceholder";
@@ -42,10 +41,6 @@ type PostFeedListItemProps = { index: number; owner: AccountId };
 function PostFeedListItem({ index, owner }: PostFeedListItemProps) {
   const id = queries.PostFeedListAtIndex({ owner, index });
   if (!id) throw new Error();
-  return (
-    <Clickable onClick={() => alert("not implemted")}>
-      <PostItem viewer={owner} author={id.author} createdAt={id.createdAt} />
-    </Clickable>
-  );
+  return <PostItem viewer={owner} author={id.author} createdAt={id.createdAt} />;
 }
 const PostFeedListItemMemo = React.memo(PostFeedListItem);

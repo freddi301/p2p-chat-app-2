@@ -1,7 +1,7 @@
-import { Reducer } from "../lib/reducer";
-import { makeKeyedReducer } from "../lib/reducer/factory";
-import { AccountId } from "./common/AccountId";
-import { Timestamp } from "./common/Timestamp";
+import { Reducer } from "../../lib/reducer";
+import { makeKeyedReducer } from "../../lib/reducer/factory";
+import { AccountId } from "../common/AccountId";
+import { Timestamp } from "../common/Timestamp";
 
 type ContactState =
   | { type: "undefined" }

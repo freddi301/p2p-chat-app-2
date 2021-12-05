@@ -20,14 +20,20 @@ export type Commands = {
     description: string;
   }): void;
   ContactDelete(params: { owner: AccountId; id: AccountId; timestamp: Timestamp }): void;
-  PostUpdate(params: { author: AccountId; createdAd: Timestamp; timestamp: Timestamp; text: string }): void;
-  PostDelete(params: { author: AccountId; createdAd: Timestamp; timestamp: Timestamp }): void;
   DirectMessageUpdate(params: {
     sender: AccountId;
-    receiver: AccountId;
+    recipient: AccountId;
     createdAt: Timestamp;
+    timestamp: Timestamp;
     text: string;
     attachments: Array<{ name: string; id: FileId }>;
   }): void;
-  DirectMessageDelete(params: { sender: AccountId; receiver: AccountId; createdAt: Timestamp }): void;
+  DirectMessageDelete(params: {
+    sender: AccountId;
+    recipient: AccountId;
+    createdAt: Timestamp;
+    timestamp: Timestamp;
+  }): void;
+  PostUpdate(params: { author: AccountId; createdAt: Timestamp; timestamp: Timestamp; text: string }): void;
+  PostDelete(params: { author: AccountId; createdAt: Timestamp; timestamp: Timestamp }): void;
 };

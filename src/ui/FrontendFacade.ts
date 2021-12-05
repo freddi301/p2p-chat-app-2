@@ -1,12 +1,17 @@
 import { Commands } from "../domain/commands";
 import { Queries } from "../domain/queries";
-import { actionCreators, reducer, State, stateSelectors } from "../domain/reducer";
+import { actionCreators, reducer, State, stateSelectors } from "../domain/reducers";
 import { Map } from "../lib/immutable/Map";
 import { Store } from "../lib/reducer/Store";
 import React from "react";
 import { isEqual } from "lodash";
 
-const store = new Store(reducer, { contacts: Map.empty<any, any>(), accounts: Map.empty<any, any>() });
+const store = new Store(reducer, {
+  contacts: Map.empty<any, any>(),
+  accounts: Map.empty<any, any>(),
+  directMessages: Map.empty<any, any>(),
+  posts: Map.empty<any, any>(),
+});
 
 export const commands: Commands = Object.fromEntries(
   Object.entries(actionCreators).map(([key, actionCreator]) => {

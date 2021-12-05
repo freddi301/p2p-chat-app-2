@@ -1,13 +1,23 @@
-import { ActionCreatorsFromCommnads, ActionOfReducer, StateOfReducer, StateSelectorsFromQueries } from "../lib/reducer";
-import { makeCombinedReducer } from "../lib/reducer/factory";
+import {
+  ActionCreatorsFromCommnads,
+  ActionOfReducer,
+  StateOfReducer,
+  StateSelectorsFromQueries,
+} from "../../lib/reducer";
+import { makeCombinedReducer } from "../../lib/reducer/factory";
 import { accountsReducer } from "./account";
-import { Commands } from "./commands";
+import { Commands } from "../commands";
 import { contactsReducer } from "./contact";
-import { Queries } from "./queries";
+import { Queries } from "../queries";
+import { directMessagesReducer } from "./direct-message";
+import { postsReducer } from "./post";
+import { AccountId } from "../common/AccountId";
 
 export const reducer = makeCombinedReducer({
   accounts: accountsReducer,
   contacts: contactsReducer,
+  directMessages: directMessagesReducer,
+  posts: postsReducer,
 });
 
 export type Action = ActionOfReducer<typeof reducer>;
@@ -29,17 +39,29 @@ export const actionCreators: ActionCreatorsFromCommnads<Action, Commands> = {
   ContactDelete({ id, owner, timestamp }) {
     return { key: "contacts", action: { key: { owner, contact: id }, action: { type: "delete", timestamp } } };
   },
-  DirectMessageUpdate() {
-    throw new Error();
+  DirectMessageUpdate({ sender, recipient, createdAt, timestamp, text }) {
+    return {
+      key: "directMessages",
+      action: { key: { sender, recipient, createdAt }, action: { type: "update", timestamp, text } },
+    };
   },
-  DirectMessageDelete() {
-    throw new Error();
+  DirectMessageDelete({ sender, recipient, createdAt, timestamp }) {
+    return {
+      key: "directMessages",
+      action: { key: { sender, recipient, createdAt }, action: { type: "delete", timestamp } },
+    };
   },
-  PostUpdate() {
-    throw new Error();
+  PostUpdate({ author, createdAt, timestamp, text }) {
+    return {
+      key: "posts",
+      action: { key: { author, createdAt }, action: { type: "update", timestamp, text } },
+    };
   },
-  PostDelete() {
-    throw new Error();
+  PostDelete({ author, createdAt, timestamp }) {
+    return {
+      key: "posts",
+      action: { key: { author, createdAt }, action: { type: "delete", timestamp } },
+    };
   },
 };
 
@@ -49,6 +71,17 @@ const getAccountList = (state: State) => {
     .entries()
     .flatMap(([id, state]) =>
       state.type === "updated" ? [{ id, name: state.name, description: state.description }] : []
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+};
+
+const getContactList = (state: State, owner: AccountId) => {
+  return state.contacts
+    .entries()
+    .flatMap(([id, state]) =>
+      state.type === "updated" && id.owner.equals(owner)
+        ? [{ id, name: state.name, description: state.description }]
+        : []
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 };
@@ -69,43 +102,49 @@ export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
         return null;
     }
   },
-  ContactById() {
-    throw new Error();
+  ContactListSize({ owner }) {
+    return getContactList(this, owner).length;
   },
-  ContactListAtIndex() {
-    throw new Error();
+  ContactListAtIndex({ owner, index }) {
+    return getContactList(this, owner).at(index)?.id.contact ?? null;
   },
-  ContactListSize() {
-    throw new Error();
+  ContactById({ owner, id }) {
+    const existing = this.contacts.get({ owner, contact: id }) ?? { type: "undefined" };
+    switch (existing.type) {
+      case "updated":
+        return { name: existing.name, description: existing.description };
+      default:
+        return null;
+    }
   },
-  ConversationAtIndex() {
+  ConversationListSize() {
     throw new Error();
   },
   ConversationListAtIndex() {
     throw new Error();
   },
-  ConversationListSize() {
+  ConversationSize() {
     throw new Error();
   },
-  ConversationSize() {
+  ConversationAtIndex() {
     throw new Error();
   },
   DirectMessageById() {
     throw new Error();
   },
-  PostById() {
-    throw new Error();
-  },
-  PostFeedListAtIndex() {
-    throw new Error();
-  },
-  PostFeedListSize() {
+  PostListSize() {
     throw new Error();
   },
   PostListAtIndex() {
     throw new Error();
   },
-  PostListSize() {
+  PostById() {
+    throw new Error();
+  },
+  PostFeedListSize() {
+    throw new Error();
+  },
+  PostFeedListAtIndex() {
     throw new Error();
   },
 };

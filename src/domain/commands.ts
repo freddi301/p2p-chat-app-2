@@ -4,14 +4,13 @@ import { Timestamp } from "./common/Timestamp";
 import { FileId } from "./common/FileId";
 
 export type Commands = {
-  AccountCreate(params: {
+  AccountUpdate(params: {
     id: AccountId;
-    secret: AccountSecret;
     timestamp: Timestamp;
+    secret: AccountSecret;
     name: string;
     description: string;
   }): void;
-  AccountUpdate(params: { id: AccountId; timestamp: Timestamp; name: string; description: string }): void;
   AccountDelete(params: { id: AccountId; timestamp: Timestamp }): void;
   ContactUpdate(params: {
     owner: AccountId;

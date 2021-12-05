@@ -23,7 +23,7 @@ export function AccountScreen({ id }: AccountScreenProps) {
   const [description, setDescription] = React.useState(account.description);
   const onSave = () => {
     const timestamp = Timestamp.now();
-    commands.AccountUpdate({ id, timestamp, name, description });
+    commands.AccountUpdate({ id, timestamp, name, description, secret: account.secret });
   };
   const onDelete = () => {
     const confirm = prompt("Type account name to confirm elimination");

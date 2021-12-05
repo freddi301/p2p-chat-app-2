@@ -30,4 +30,7 @@ export class Map<Key, Value> {
   mapValues(mapper: (key: Key, value: Value) => Value): Map<Key, Value> {
     return new Map(this.immutableMap.map((value, key) => mapper(this.deserializeKey(key), value)));
   }
+  entries() {
+    return Array.from(this.immutableMap.entries()).map(([key, value]) => [key.value, value] as const);
+  }
 }

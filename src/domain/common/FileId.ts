@@ -1,8 +1,13 @@
+import Immutable from "immutable";
 import libsodium from "libsodium-wrappers";
 
 export class FileId {
-  private constructor(private hash: Uint8Array) {
+  private hash: Uint8Array;
+  private precalculatedHashCode: number;
+  private constructor(hash: Uint8Array) {
     if (hash.length !== libsodium.crypto_generichash_BYTES) throw new Error();
+    this.hash = hash;
+    this.precalculatedHashCode = Immutable.hash(this.toHex());
   }
   toUint8Array() {
     return this.hash;
@@ -24,5 +29,8 @@ export class FileId {
   }
   equals(other: FileId) {
     return libsodium.compare(this.hash, other.hash) === 0;
+  }
+  hashCode(): number {
+    return this.precalculatedHashCode;
   }
 }

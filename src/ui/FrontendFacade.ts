@@ -1,21 +1,42 @@
 import { Commands } from "../domain/commands";
-import { AccountId } from "../domain/common/AccountId";
-import { FileId } from "../domain/common/FileId";
-import { Timestamp } from "../domain/common/Timestamp";
 import { Queries } from "../domain/queries";
+import { actionCreators, reducer, State, stateSelectors } from "../domain/reducer";
+import { Map } from "../lib/immutable/Map";
+import { Store } from "../lib/reducer/Store";
+import React from "react";
+import { isEqual } from "lodash";
 
-export const commands: Commands = {
-  AccountCreate() {},
-  AccountUpdate() {},
-  AccountDelete() {},
-  ContactUpdate() {},
-  ContactDelete() {},
-  PostUpdate() {},
-  PostDelete() {},
-  DirectMessageUpdate() {},
-  DirectMessageDelete() {},
-};
+const store = new Store(reducer, { contacts: Map.empty<any, any>(), accounts: Map.empty<any, any>() });
 
+export const commands: Commands = Object.fromEntries(
+  Object.entries(actionCreators).map(([key, actionCreator]) => {
+    return [key, (...args: any[]) => store.publish(actionCreator(...args))];
+  })
+) as any;
+
+export const queries: Queries = Object.fromEntries(
+  Object.entries(stateSelectors).map(([key, stateSelector]) => {
+    return [
+      key,
+      (...args: any) => {
+        const [selection, setSelection] = React.useState(stateSelector.bind(store.state)(...args));
+        const lastArgs = React.useRef(args);
+        React.useEffect(() => {
+          if (!isEqual(args, lastArgs.current)) {
+            lastArgs.current = args;
+            const onUpdate = (state: State) => setSelection(stateSelector.bind(state)(...args));
+            store.subscribe(onUpdate);
+            return () => store.unsubscribe(onUpdate);
+          }
+          return;
+        }, [args]);
+        return selection;
+      },
+    ];
+  })
+) as any;
+
+/*
 export const queries: Queries = {
   AccountListSize() {
     return 1000;
@@ -107,3 +128,4 @@ const makeFakeAccountId = (seed: number) => {
   const fakeId = new Array(32).fill(seed);
   return AccountId.fromUint8Array(Uint8Array.from(fakeId));
 };
+*/

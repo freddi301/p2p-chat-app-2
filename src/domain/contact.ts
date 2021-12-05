@@ -29,7 +29,7 @@ type ContactUIDAttributes = {
   contact: AccountId;
 };
 
-const contactsReducer = makeKeyedReducer<ContactUIDAttributes, ContactState, ContactAction>(
+export const contactsReducer = makeKeyedReducer<ContactUIDAttributes, ContactState, ContactAction>(
   contactReducer,
   contactInitialState
 );

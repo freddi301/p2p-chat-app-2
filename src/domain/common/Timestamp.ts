@@ -1,3 +1,5 @@
+import Immutable from "immutable";
+
 export class Timestamp {
   private constructor(private epochMillis: number) {}
   static greaterThan(x: Timestamp, y: Timestamp) {
@@ -14,5 +16,8 @@ export class Timestamp {
   }
   toDate() {
     return new Date(this.epochMillis);
+  }
+  hashCode(): number {
+    return Immutable.hash(this.epochMillis);
   }
 }

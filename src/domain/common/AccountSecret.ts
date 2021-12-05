@@ -1,9 +1,14 @@
+import Immutable from "immutable";
 import libsodium from "libsodium-wrappers";
 import { AccountId } from "./AccountId";
 
 export class AccountSecret {
-  private constructor(private privateKey: Uint8Array) {
+  private privateKey: Uint8Array;
+  private precalculatedHashCode: number;
+  private constructor(privateKey: Uint8Array) {
     if (privateKey.length !== libsodium.crypto_box_SECRETKEYBYTES) throw new Error();
+    this.privateKey = privateKey;
+    this.precalculatedHashCode = Immutable.hash(this.toHex());
   }
   static create() {
     const { publicKey, privateKey } = libsodium.crypto_box_keypair();
@@ -29,5 +34,8 @@ export class AccountSecret {
   }
   equals(other: AccountSecret) {
     return libsodium.compare(this.privateKey, other.privateKey) === 0;
+  }
+  hashCode(): number {
+    return this.precalculatedHashCode;
   }
 }

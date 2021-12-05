@@ -21,7 +21,7 @@ export function AccountCreateScreen(props: AccountCreateScreenProps) {
   const onCreate = () => {
     const [id, secret] = AccountSecret.create();
     const timestamp = Timestamp.now();
-    commands.AccountCreate({ id, secret, timestamp, name, description });
+    commands.AccountUpdate({ id, secret, timestamp, name, description });
     pop();
   };
   return (

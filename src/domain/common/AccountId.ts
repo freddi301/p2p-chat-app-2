@@ -1,8 +1,13 @@
+import Immutable from "immutable";
 import libsodium from "libsodium-wrappers";
 
-export class AccountId {
-  private constructor(private publicKey: Uint8Array) {
+export class AccountId implements Immutable.ValueObject {
+  private publicKey: Uint8Array;
+  private precalculatedHashCode: number;
+  private constructor(publicKey: Uint8Array) {
     if (publicKey.length !== libsodium.crypto_box_PUBLICKEYBYTES) throw new Error();
+    this.publicKey = publicKey;
+    this.precalculatedHashCode = Immutable.hash(this.toHex());
   }
   toUint8Array() {
     return this.publicKey;
@@ -24,5 +29,8 @@ export class AccountId {
   }
   equals(other: AccountId) {
     return libsodium.compare(this.publicKey, other.publicKey) === 0;
+  }
+  hashCode(): number {
+    return this.precalculatedHashCode;
   }
 }

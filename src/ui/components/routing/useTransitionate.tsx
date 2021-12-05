@@ -3,68 +3,69 @@ import ReactDOM from "react-dom";
 import { css } from "styled-components/macro";
 
 export function useTransitionate() {
+  type PortalEntry = { key: string; element: HTMLDivElement; children: React.ReactNode; expired: boolean };
   const duration = 0.3;
-  const [queue, setQueue] = React.useState<Array<{ element: HTMLDivElement; portal: React.ReactPortal }>>([]);
-  const lastItemRef = React.useRef<HTMLDivElement | null>(null);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [{ enterFrom, children }, setTransition] = React.useState<{
-    enterFrom: keyof typeof transformMap;
-    children: React.ReactNode;
-  }>({ enterFrom: "stay", children: null });
-  const next = React.useCallback((enterFrom: keyof typeof transformMap, children: React.ReactNode) => {
-    setTransition({ enterFrom, children });
-  }, []);
+  const [portals, setPortals] = React.useState<Array<PortalEntry>>([]);
+  const containerElementRef = React.useRef<HTMLDivElement | null>(null);
   React.useLayoutEffect(() => {
-    const key = Math.random().toString();
-    const entering = document.createElement("div");
-    entering.style.position = "absolute";
-    entering.style.width = "100%";
-    entering.style.height = "100%";
-    entering.style.transform = transformMap[enterFrom].entering;
-    entering.style.transition = `transform ${duration}s ease-in-out`;
-    entering.style.pointerEvents = "none";
-    entering.style.userSelect = "none";
-    setTimeout(() => {
-      entering.style.transform = "translate(0%, 0%)";
-    }, 0);
-    setTimeout(() => {
-      entering.style.pointerEvents = "auto";
-      entering.style.userSelect = "auto";
-    }, duration * 1000);
-    containerRef.current?.appendChild(entering);
-    const portal = ReactDOM.createPortal(children, entering, key);
-    setQueue((queue) => queue.concat({ element: entering, portal }));
-    if (lastItemRef.current) {
-      lastItemRef.current.style.pointerEvents = "none";
-      lastItemRef.current.style.userSelect = "none";
-      lastItemRef.current.style.transition = `transform ${duration}s ease-in-out`;
-      lastItemRef.current.style.transform = transformMap[enterFrom].leaving;
-      setTimeout(() => {
-        setQueue((queue) => {
-          const [removed, ...rest] = queue;
-          if (removed) {
-            setTimeout(() => {
-              containerRef.current?.removeChild(removed.element);
-            }, 0);
-          }
-          return rest;
-        });
-      }, duration * 1000);
+    if (containerElementRef.current) {
+      const containerElement = containerElementRef.current;
+      containerElement.style.position = "relative";
+      containerElement.style.width = "100%";
+      containerElement.style.height = "100%";
+      containerElement.style.overflow = "hidden";
     }
-    lastItemRef.current = entering;
-  }, [children, duration, enterFrom]);
+  }, []);
+  const lastPortalEntryRef = React.useRef<PortalEntry | null>(null);
+  const next = React.useCallback((enterFrom: keyof typeof transformMap, children: React.ReactNode) => {
+    if (containerElementRef.current) {
+      const containerElement = containerElementRef.current;
+      const enteringElement = document.createElement("div");
+      enteringElement.style.position = "absolute";
+      enteringElement.style.width = "100%";
+      enteringElement.style.height = "100%";
+      enteringElement.style.transform = transformMap[enterFrom].entering;
+      enteringElement.style.transition = `transform ${duration}s ease-in-out`;
+      enteringElement.style.pointerEvents = "none";
+      enteringElement.style.userSelect = "none";
+      enteringElement.style.overflow = "hidden";
+      setTimeout(() => {
+        enteringElement.style.transform = "translate(0%, 0%)";
+      }, 0);
+      setTimeout(() => {
+        enteringElement.style.pointerEvents = "auto";
+        enteringElement.style.userSelect = "auto";
+      }, duration * 1000);
+      containerElement.appendChild(enteringElement);
+      if (lastPortalEntryRef.current) {
+        const lastPortalEntry = lastPortalEntryRef.current;
+        const exitingElement = lastPortalEntry.element;
+        exitingElement.style.pointerEvents = "none";
+        exitingElement.style.userSelect = "none";
+        exitingElement.style.transition = `transform ${duration}s ease-in-out`;
+        exitingElement.style.transform = transformMap[enterFrom].leaving;
+        setTimeout(() => {
+          if (Array.prototype.includes.call(containerElement.children, exitingElement)) {
+            containerElement.removeChild(exitingElement);
+            lastPortalEntry.expired = true;
+          }
+        }, duration * 1000);
+      }
+      const portalEntry: PortalEntry = {
+        key: Math.random().toString(),
+        element: enteringElement,
+        children,
+        expired: false,
+      };
+      lastPortalEntryRef.current = portalEntry;
+      setPortals((portals) => [...portals.filter(({ expired }) => !expired), portalEntry]);
+    }
+  }, []);
   return [
-    <div
-      ref={containerRef}
-      css={css`
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      `}
-    >
-      {queue.map(({ portal }) => portal)}
-    </div>,
+    <React.Fragment>
+      <div ref={containerElementRef} />
+      {portals.map(({ key, element, children }) => ReactDOM.createPortal(children, element, key))}
+    </React.Fragment>,
     next,
   ] as const;
 }

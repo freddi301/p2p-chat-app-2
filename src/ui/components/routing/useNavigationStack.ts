@@ -25,15 +25,6 @@ export function useNavigationStack<NavigationState>(
       }
     });
   }, [onPop]);
-  React.useLayoutEffect(() => {
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") pop();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [pop]);
   return { push, pop, current };
 }
 

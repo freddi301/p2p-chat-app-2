@@ -20,7 +20,14 @@ type ConversationScreenProps = {
 };
 export function ConversationScreen({ owner, other }: ConversationScreenProps) {
   const onSend = (text: string, attachments: Array<{ name: string; id: FileId }>) => {
-    commands.DirectMessageUpdate({ sender: owner, receiver: other, createdAt: Timestamp.now(), text, attachments });
+    commands.DirectMessageUpdate({
+      sender: owner,
+      recipient: other,
+      createdAt: Timestamp.now(),
+      text,
+      attachments,
+      timestamp: Timestamp.now(),
+    });
   };
   const conversationSize = queries.ConversationSize({ owner, other });
   const [isAtBottom, setIsAtBottom] = React.useState(false);
@@ -123,6 +130,7 @@ function ConversationItem({ index, owner, other }: ConversationItemProps) {
   if (!id) throw new Error();
   const { sender, recipient, createdAt } = id;
   const message = queries.DirectMessageById({ sender, recipient, createdAt });
+  if (!message) throw new Error();
   const senderAccount = queries.AccountById({ id: sender });
   const senderContact = queries.ContactById({ owner, id: sender });
   const senderName = senderAccount?.name ?? senderContact?.name ?? "???";

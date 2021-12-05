@@ -86,6 +86,19 @@ const getContactList = (state: State, owner: AccountId) => {
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
+const getConversation = (state: State, owner: AccountId, other: AccountId) => {
+  return state.directMessages.entries().flatMap(([id, state]) => {
+    if (
+      ((id.sender.equals(owner) && id.recipient.equals(other)) ||
+        (id.sender.equals(other) && id.recipient.equals(owner))) &&
+      state.type === "updated"
+    ) {
+      return [id];
+    }
+    return [];
+  });
+};
+
 export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
   AccountListSize() {
     return getAccountList(this).length;
@@ -123,14 +136,20 @@ export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
   ConversationListAtIndex() {
     throw new Error();
   },
-  ConversationSize() {
-    throw new Error();
+  ConversationSize({ owner, other }) {
+    return getConversation(this, owner, other).length;
   },
-  ConversationAtIndex() {
-    throw new Error();
+  ConversationAtIndex({ owner, other, index }) {
+    return getConversation(this, owner, other).at(index) ?? null;
   },
-  DirectMessageById() {
-    throw new Error();
+  DirectMessageById({ sender, recipient, createdAt }) {
+    const existing = this.directMessages.get({ sender, recipient, createdAt }) ?? { type: "undefined" };
+    switch (existing.type) {
+      case "updated":
+        return { text: existing.text, attachments: [] };
+      default:
+        return null;
+    }
   },
   PostListSize() {
     throw new Error();

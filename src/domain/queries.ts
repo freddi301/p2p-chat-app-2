@@ -30,7 +30,7 @@ export type Queries = {
   DirectMessageById(params: { sender: AccountId; recipient: AccountId; createdAt: Timestamp }): {
     text: string;
     attachments: Array<{ name: string; id: FileId }>;
-  };
+  } | null;
   PostListSize(params: { viewer: AccountId; author: AccountId }): number;
   PostListAtIndex(params: {
     viewer: AccountId;

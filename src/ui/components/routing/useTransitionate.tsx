@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { css } from "styled-components/macro";
 
 export function useTransitionate() {
   type PortalEntry = { key: string; element: HTMLDivElement; children: React.ReactNode; expired: boolean };

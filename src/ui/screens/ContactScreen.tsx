@@ -37,9 +37,6 @@ export function ContactScreen({ owner, id }: ContactScreenProps) {
   const onConversation = () => {
     push({ screen: "conversation", owner, other: id });
   };
-  const onPosts = () => {
-    push({ screen: "post-list", viewer: owner, author: id });
-  };
   return (
     <HeaderContentControlsLayout
       header={<SimpleHeader>Contact</SimpleHeader>}
@@ -66,7 +63,6 @@ export function ContactScreen({ owner, id }: ContactScreenProps) {
           </div>
           <Textarea label="Description" value={description} onChange={setDescription} />
           <Button label="Conversation" icon="Conversation" onClick={onConversation} />
-          <Button label="Posts" icon="Posts" onClick={onPosts} />
         </div>
       }
       controls={

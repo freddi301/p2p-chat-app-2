@@ -31,13 +31,4 @@ export type Queries = {
     text: string;
     attachments: Array<{ name: string; id: FileId }>;
   } | null;
-  PostListSize(params: { viewer: AccountId; author: AccountId }): number;
-  PostListAtIndex(params: {
-    viewer: AccountId;
-    author: AccountId;
-    index: number;
-  }): { author: AccountId; createdAt: Timestamp } | null;
-  PostById(params: { author: AccountId; createdAt: Timestamp }): { text: string } | null;
-  PostFeedListSize(params: { owner: AccountId }): number;
-  PostFeedListAtIndex(params: { owner: AccountId; index: number }): { author: AccountId; createdAt: Timestamp } | null;
 };

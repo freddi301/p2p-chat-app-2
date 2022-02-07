@@ -11,7 +11,6 @@ export const themeIcons = {
   Contacts: <i className="fas fa-address-book" />,
   Conversation: <i className="fas fa-envelope" />,
   Conversations: <i className="fas fa-comment-alt" />,
-  Posts: <i className="fas fa-portrait" />,
   ReadOnly: <i className="fas fa-lock" />,
   Required: <i className="fas fa-asterisk" />,
   Close: <i className="fas fa-times" />,

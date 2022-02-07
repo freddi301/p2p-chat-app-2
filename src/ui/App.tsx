@@ -9,8 +9,6 @@ import { AccountScreen } from "./screens/AccountScreen";
 import { ContactListScreen } from "./screens/ContactListScreen";
 import { ContactCreateScreen } from "./screens/ContactCreateScreen";
 import { ContactScreen } from "./screens/ContactScreen";
-import { PostListScreen } from "./screens/PostListScreen";
-import { PostFeedListScreen } from "./screens/PostFeedListScreen";
 import { ConversationListScreen } from "./screens/ConversationListScreen";
 import { HeaderContentControlsLayout } from "./components/reusable/HeaderContentControlsLayout";
 import { SimpleHeader } from "./components/reusable/SimpleHeader";
@@ -51,10 +49,6 @@ function Screen({ routing }: ScreeProps) {
       return <ConversationListScreen owner={routing.owner} />;
     case "conversation":
       return <ConversationScreen owner={routing.owner} other={routing.other} />;
-    case "post-list":
-      return <PostListScreen viewer={routing.viewer} author={routing.author} />;
-    case "post-feed-list":
-      return <PostFeedListScreen owner={routing.owner} />;
   }
   return (
     <HeaderContentControlsLayout

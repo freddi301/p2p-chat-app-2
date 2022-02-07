@@ -34,6 +34,4 @@ export type Commands = {
     createdAt: Timestamp;
     timestamp: Timestamp;
   }): void;
-  PostUpdate(params: { author: AccountId; createdAt: Timestamp; timestamp: Timestamp; text: string }): void;
-  PostDelete(params: { author: AccountId; createdAt: Timestamp; timestamp: Timestamp }): void;
 };

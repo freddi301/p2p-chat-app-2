@@ -13,7 +13,6 @@ const store = new Store(reducer, {
   contacts: Map.empty<any, any>(),
   accounts: Map.empty<any, any>(),
   directMessages: Map.empty<any, any>(),
-  posts: Map.empty<any, any>(),
 });
 
 function generateMockData() {

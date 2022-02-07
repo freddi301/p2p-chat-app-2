@@ -10,14 +10,15 @@ import { Commands } from "../commands";
 import { contactsReducer } from "./contact";
 import { Queries } from "../queries";
 import { directMessagesReducer } from "./direct-message";
-import { postsReducer } from "./post";
 import { AccountId } from "../common/AccountId";
+import { Timestamp } from "../common/Timestamp";
+import { FileId } from "../common/FileId";
+import { Map } from "../../lib/immutable/Map";
 
 export const reducer = makeCombinedReducer({
   accounts: accountsReducer,
   contacts: contactsReducer,
   directMessages: directMessagesReducer,
-  posts: postsReducer,
 });
 
 export type Action = ActionOfReducer<typeof reducer>;
@@ -51,18 +52,6 @@ export const actionCreators: ActionCreatorsFromCommnads<Action, Commands> = {
       action: { key: { sender, recipient, createdAt }, action: { type: "delete", timestamp } },
     };
   },
-  PostUpdate({ author, createdAt, timestamp, text }) {
-    return {
-      key: "posts",
-      action: { key: { author, createdAt }, action: { type: "update", timestamp, text } },
-    };
-  },
-  PostDelete({ author, createdAt, timestamp }) {
-    return {
-      key: "posts",
-      action: { key: { author, createdAt }, action: { type: "delete", timestamp } },
-    };
-  },
 };
 
 // should be a reducer
@@ -75,6 +64,7 @@ const getAccountList = (state: State) => {
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
+// should be a reducer
 const getContactList = (state: State, owner: AccountId) => {
   return state.contacts
     .entries()
@@ -86,6 +76,7 @@ const getContactList = (state: State, owner: AccountId) => {
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
+// should be a reducer
 const getConversation = (state: State, owner: AccountId, other: AccountId) => {
   return state.directMessages.entries().flatMap(([id, state]) => {
     if (
@@ -98,6 +89,22 @@ const getConversation = (state: State, owner: AccountId, other: AccountId) => {
     return [];
   });
 };
+
+// should be a reducer
+const getConversationList = (state: State, owner: AccountId) => {
+  state.directMessages.entries().reduce((map, [id, state]) => {
+    if ((id.sender.equals(owner) || id.recipient.equals(owner)) && state.type=== "updated") {
+      const other = id.sender.equals(owner) ? id.recipient : id.sender
+      const existing = map.get(other)
+      if (existing)
+    }
+    return map
+  }, Map.empty<AccountId, {sender: AccountId;
+    recipient: AccountId;
+    createdAt: Timestamp;
+    text: string;
+    attachments: Array<{ name: string; id: FileId }>;}>())
+}
 
 export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
   AccountListSize() {
@@ -150,20 +157,5 @@ export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
       default:
         return null;
     }
-  },
-  PostListSize() {
-    throw new Error();
-  },
-  PostListAtIndex() {
-    throw new Error();
-  },
-  PostById() {
-    throw new Error();
-  },
-  PostFeedListSize() {
-    throw new Error();
-  },
-  PostFeedListAtIndex() {
-    throw new Error();
   },
 };

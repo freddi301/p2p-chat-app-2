@@ -46,7 +46,7 @@ export function AccountListScreen() {
 type AccountListItemProps = { index: number; onAccount(id: AccountId): void };
 function AccountListItem({ index, onAccount }: AccountListItemProps) {
   const id = queries.AccountListAtIndex({ index });
-  if (!id) throw new Error();
+  if (!id) return null;
   return (
     <Clickable onClick={() => onAccount(id)}>
       <AccountItem id={id} />

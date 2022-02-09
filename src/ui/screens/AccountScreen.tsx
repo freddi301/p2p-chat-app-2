@@ -18,12 +18,13 @@ type AccountScreenProps = {
 export function AccountScreen({ id }: AccountScreenProps) {
   const { pop, push } = React.useContext(RoutingContext);
   const account = queries.AccountById({ id });
-  if (!account) throw new Error();
-  const [name, setName] = React.useState(account.name);
-  const [description, setDescription] = React.useState(account.description);
+  const [name, setName] = React.useState(account?.name ?? "");
+  const [description, setDescription] = React.useState(account?.description ?? "");
   const onSave = () => {
-    const timestamp = Timestamp.now();
-    commands.AccountUpdate({ id, timestamp, name, description, secret: account.secret });
+    if (account) {
+      const timestamp = Timestamp.now();
+      commands.AccountUpdate({ id, timestamp, name, description, secret: account.secret });
+    }
   };
   const onDelete = () => {
     const confirm = prompt("Type account name to confirm elimination");

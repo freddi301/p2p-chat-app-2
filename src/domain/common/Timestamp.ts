@@ -17,6 +17,9 @@ export class Timestamp {
   toDate() {
     return new Date(this.epochMillis);
   }
+  toEpochMillis() {
+    return this.epochMillis;
+  }
   hashCode(): number {
     return Immutable.hash(this.epochMillis);
   }

@@ -92,19 +92,38 @@ const getConversation = (state: State, owner: AccountId, other: AccountId) => {
 
 // should be a reducer
 const getConversationList = (state: State, owner: AccountId) => {
-  state.directMessages.entries().reduce((map, [id, state]) => {
-    if ((id.sender.equals(owner) || id.recipient.equals(owner)) && state.type=== "updated") {
-      const other = id.sender.equals(owner) ? id.recipient : id.sender
-      const existing = map.get(other)
-      if (existing)
+  const map = state.directMessages.entries().reduce((map, [id, state]) => {
+    if ((id.sender.equals(owner) || id.recipient.equals(owner)) && state.type === "updated") {
+      const other = id.sender.equals(owner) ? id.recipient : id.sender;
+      const existing = map.get(other);
+      if (!existing || Timestamp.greaterThan(id.createdAt, existing.createdAt)) {
+        return map.set(other, {
+          sender: id.sender,
+          recipient: id.recipient,
+          createdAt: id.createdAt,
+          text: state.text,
+          attachments: [],
+        });
+      }
     }
-    return map
-  }, Map.empty<AccountId, {sender: AccountId;
-    recipient: AccountId;
-    createdAt: Timestamp;
-    text: string;
-    attachments: Array<{ name: string; id: FileId }>;}>())
-}
+    return map;
+  }, Map.empty<AccountId, { sender: AccountId; recipient: AccountId; createdAt: Timestamp; text: string; attachments: Array<{ name: string; id: FileId }> }>());
+  return map
+    .entries()
+    .map(([other, { sender, recipient, createdAt, text, attachments }]) => {
+      return {
+        other,
+        lastMessage: {
+          sender,
+          recipient,
+          createdAt,
+          text,
+          attachments,
+        },
+      };
+    })
+    .sort((a, b) => a.lastMessage.createdAt.toEpochMillis() - b.lastMessage.createdAt.toEpochMillis());
+};
 
 export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
   AccountListSize() {
@@ -137,11 +156,12 @@ export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
         return null;
     }
   },
-  ConversationListSize() {
-    throw new Error();
+  ConversationListSize({ owner }) {
+    return getConversationList(this, owner).length;
   },
-  ConversationListAtIndex() {
-    throw new Error();
+  ConversationListAtIndex({ owner, index }) {
+    console.log(getConversationList(this, owner));
+    return getConversationList(this, owner).at(index) ?? null;
   },
   ConversationSize({ owner, other }) {
     return getConversation(this, owner, other).length;

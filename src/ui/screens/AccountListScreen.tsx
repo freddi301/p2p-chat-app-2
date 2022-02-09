@@ -35,9 +35,11 @@ export function AccountListScreen() {
         )
       }
       controls={
-        <ControlButtonGroup>
-          <Button icon="Create" label="Create" onClick={onCreate} showLabel={false} />
-        </ControlButtonGroup>
+        accountListSize > 0 && (
+          <ControlButtonGroup>
+            <Button icon="Create" label="Create" onClick={onCreate} showLabel={false} />
+          </ControlButtonGroup>
+        )
       }
     />
   );
@@ -68,6 +70,9 @@ function CreateAccountHint() {
         grid-auto-flow: row;
         grid-auto-rows: auto;
         padding: ${(props) => props.theme.textSpacingVertical} ${(props) => props.theme.textSpacingHorizontal};
+        height: 100%;
+        align-content: center;
+        justify-items: center;
       `}
     >
       <div>You don't have any accounts on this device</div>

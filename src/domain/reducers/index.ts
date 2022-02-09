@@ -160,7 +160,6 @@ export const stateSelectors: StateSelectorsFromQueries<State, Queries> = {
     return getConversationList(this, owner).length;
   },
   ConversationListAtIndex({ owner, index }) {
-    console.log(getConversationList(this, owner));
     return getConversationList(this, owner).at(index) ?? null;
   },
   ConversationSize({ owner, other }) {
